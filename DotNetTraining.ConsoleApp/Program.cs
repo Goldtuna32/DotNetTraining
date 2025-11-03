@@ -16,19 +16,28 @@ string query = @"SELECT [Blog_id]
   FROM [dbo].[blogTable]";
 SqlCommand cmd = new SqlCommand(query, connection);
 
+//SQL Reader //
+SqlDataReader reader = cmd.ExecuteReader();
+while (reader.Read())
+{
+    Console.WriteLine(reader["Blog_title"]);
+    Console.WriteLine(reader["Blog_author"]);
+    Console.WriteLine(reader["Blog_context"]);
+}
+
 // for each looping (Data reading after closing connection) //
-SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-DataTable dt = new DataTable();
-adapter.Fill(dt);
+//SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+//DataTable dt = new DataTable();
+//adapter.Fill(dt);
 
 connection.Close();
 Console.WriteLine("Connection is closed");
 
-foreach (DataRow dr in dt.Rows)
-{
-    Console.WriteLine(dr["Blog_title"]);
-    Console.WriteLine(dr["Blog_author"]);
-    Console.WriteLine(dr["Blog_context"]);
-}
+//foreach (DataRow dr in dt.Rows)
+//{
+//    Console.WriteLine(dr["Blog_title"]);
+//    Console.WriteLine(dr["Blog_author"]);
+//    Console.WriteLine(dr["Blog_context"]);
+//}
 
 Console.ReadKey();
