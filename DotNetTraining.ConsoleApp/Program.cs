@@ -5,7 +5,9 @@ using System.Data.SqlClient;
 
 Console.WriteLine("Hello, World!");
 
-AdoDotNetSample adoDotNetSample = new AdoDotNetSample();
-adoDotNetSample.RestoreDelete();
+//AdoDotNetSample adoDotNetSample = new AdoDotNetSample();
+//adoDotNetSample.RestoreDelete();
 
+AdoDotNetSampleTesting adoDotNetSampleTesting = new AdoDotNetSampleTesting();
+adoDotNetSampleTesting.GetById();
 Console.ReadKey();
