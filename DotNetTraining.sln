@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36623.8 d17.14
+VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetTraining.ConsoleApp", "DotNetTraining.ConsoleApp\DotNetTraining.ConsoleApp.csproj", "{8019F33C-1B7E-410C-BC41-D93484E23104}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetTrainingDatabase", "DotNetTrainingDatabase\DotNetTrainingDatabase.csproj", "{66B1F9DD-6172-4BF5-9BCC-1A0F4ED4DB0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetTraining.ConsoleApp2", "DotNetTraining.ConsoleApp2\DotNetTraining.ConsoleApp2.csproj", "{3F7F6CDF-1B5E-4082-A340-0C1F440D7749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{8019F33C-1B7E-410C-BC41-D93484E23104}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8019F33C-1B7E-410C-BC41-D93484E23104}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8019F33C-1B7E-410C-BC41-D93484E23104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66B1F9DD-6172-4BF5-9BCC-1A0F4ED4DB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66B1F9DD-6172-4BF5-9BCC-1A0F4ED4DB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66B1F9DD-6172-4BF5-9BCC-1A0F4ED4DB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66B1F9DD-6172-4BF5-9BCC-1A0F4ED4DB0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F7F6CDF-1B5E-4082-A340-0C1F440D7749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F7F6CDF-1B5E-4082-A340-0C1F440D7749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F7F6CDF-1B5E-4082-A340-0C1F440D7749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F7F6CDF-1B5E-4082-A340-0C1F440D7749}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
