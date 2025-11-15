@@ -17,6 +17,15 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<BlogTable> BlogTables { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            string connection = "Data Source=DESKTOP-UUEE2ME\\SQLEXPRESS;Initial Catalog=DotNetTraining5;User ID=sa;Password=17112006;TrustServerCertificate=True;";
+            optionsBuilder.UseSqlServer(connection);
+        }
+    }
+
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
