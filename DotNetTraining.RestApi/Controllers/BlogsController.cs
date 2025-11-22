@@ -14,7 +14,10 @@ namespace DotNetTraining.RestApi.Controllers
         [HttpGet]
         public IActionResult GetBlogs()
         {
-            var list = _db.BlogTables.AsNoTracking().ToList();
+            var list = _db.BlogTables
+                .AsNoTracking()
+                .Where(x => x.DeleteFlag == false)
+                .ToList();
             return Ok(list);
         }
         [HttpGet("{id}")]
@@ -67,10 +70,29 @@ namespace DotNetTraining.RestApi.Controllers
             _db.SaveChanges();
             return Ok();
         }
-        [HttpPatch]
-        public IActionResult PatchBlogs()
+        [HttpPatch("{id}")]
+        public IActionResult PatchBlogs(int id, BlogTable blogTable)
         {
-            return Ok();
+            var items = _db.BlogTables.AsNoTracking().FirstOrDefault(x => x.BlogId == id && x.DeleteFlag == false);
+            if (items == null)
+            {
+                return NotFound();
+            }
+            if (!string.IsNullOrEmpty(blogTable.BlogTitle))
+            {
+                items.BlogTitle = blogTable.BlogTitle;
+            }
+            if (!string.IsNullOrEmpty(blogTable.BlogAuthor))
+            {
+                items.BlogAuthor = blogTable.BlogAuthor;
+            }
+            if (!string.IsNullOrEmpty(blogTable.BlogContext))
+            {
+                items.BlogContext = blogTable.BlogContext;
+            }
+            _db.Entry(items).State = EntityState.Modified;
+            var result = _db.SaveChanges();
+            return Ok(result == 1 ? "Patching Successful" : "Patching Failed");
         }
         [HttpDelete("{id}")]
         public IActionResult DeleteBlogs(int id)
