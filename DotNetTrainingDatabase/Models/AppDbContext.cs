@@ -21,7 +21,7 @@ public partial class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string connection = "Data Source=DESKTOP-UUEE2ME\\SQLEXPRESS;Initial Catalog=DotNetTraining5;User ID=sa;Password=17112006;TrustServerCertificate=True;";
+            string connection = "Data Source=DESKTOP-UUEE2ME\\SA;Initial Catalog=DotNetTraining5;User ID=sa;Password=17112006;TrustServerCertificate=True;";
             optionsBuilder.UseSqlServer(connection);
         }
     }

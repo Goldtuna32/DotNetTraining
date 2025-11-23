@@ -1,4 +1,5 @@
-﻿using DotNetTrainingDatabase.Models;
+﻿using DotNetTraining.RestApi.DataModel;
+using DotNetTrainingDatabase.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,55 @@ namespace DotNetTraining.RestApi.Controllers
                 .AsNoTracking()
                 .Where(x => x.DeleteFlag == false)
                 .ToList();
-            return Ok(list);
+            if (list is null || list.Count == 0)
+            {
+                return NotFound();
+            }
+
+            List<BlogsDTO> blogsList = new List<BlogsDTO>();
+            foreach (var item in list)
+            {
+                BlogsDTO blogsDTO = new BlogsDTO();
+                blogsDTO.BlogId = item.BlogId;
+                blogsDTO.BlogTitle = item.BlogTitle;
+                blogsDTO.BlogAuthor = item.BlogAuthor;
+                blogsDTO.BlogContext = item.BlogContext;
+
+                blogsList.Add(blogsDTO);
+
+            }
+
+            return Ok(blogsList);
+
+        }
+
+        [HttpGet]
+        public IActionResult GetDeletedBlogs()
+        {
+            var list = _db.BlogTables
+                .AsNoTracking()
+                .Where(x => x.DeleteFlag == true)
+                .ToList();
+            if (list is null || list.Count == 0)
+            {
+                return NotFound();
+            }
+
+            List<BlogsDTO> blogsList = new List<BlogsDTO>();
+            foreach (var item in list)
+            {
+                BlogsDTO blogsDTO = new BlogsDTO();
+                blogsDTO.BlogId = item.BlogId;
+                blogsDTO.BlogTitle = item.BlogTitle;
+                blogsDTO.BlogAuthor = item.BlogAuthor;
+                blogsDTO.BlogContext = item.BlogContext;
+
+                blogsList.Add(blogsDTO);
+
+            }
+
+            return Ok(blogsList);
+
         }
         [HttpGet("{id}")]
         public IActionResult GetBlogsId(int id)
@@ -28,67 +77,83 @@ namespace DotNetTraining.RestApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(list);
+            BlogsDTO blogsDTO = new BlogsDTO()
+            {
+                BlogId = list.BlogId,
+                BlogTitle = list.BlogTitle,
+                BlogAuthor = list.BlogAuthor,
+                BlogContext = list.BlogContext
+            };
+            return Ok(blogsDTO);
         }
 
         [HttpPost]
-        public IActionResult CreateBlogs(BlogTable blogTable)
+        public IActionResult CreateBlogs(BlogsDTO blogsDTO)
         {
-            if (!ModelState.IsValid)
+
+            if (blogsDTO.BlogTitle is null || blogsDTO.BlogAuthor is null || blogsDTO.BlogContext is null)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
+            BlogTable blogTable = new BlogTable()
+            {
+                BlogTitle = blogsDTO.BlogTitle,
+                BlogAuthor = blogsDTO.BlogAuthor,
+                BlogContext = blogsDTO.BlogContext,
+                DeleteFlag = false
+            };
             _db.BlogTables.Add(blogTable);
             _db.SaveChanges();
             return Ok(blogTable);
         }
+
         [HttpPut("{id}")]
-        public IActionResult UpdateBlogs(int id, BlogTable blogTable)
+        public IActionResult UpdateBlogs(int id, BlogsDTO blogsDTO)
         {
             var item = _db.BlogTables.AsNoTracking().FirstOrDefault(x => x.BlogId == id && x.DeleteFlag == false);
             if (item == null)
             {
                 return NotFound();
             }
-            item.BlogTitle = blogTable.BlogTitle;
-            if (blogTable.BlogTitle is null)
+            item.BlogTitle = blogsDTO.BlogTitle;
+            if (blogsDTO.BlogTitle is null)
             {
-                blogTable.BlogTitle = item.BlogTitle;
+                blogsDTO.BlogTitle = item.BlogTitle;
             }
-            item.BlogAuthor = blogTable.BlogAuthor;
-            if (blogTable.BlogAuthor is null)
+            item.BlogAuthor = blogsDTO.BlogAuthor;
+            if (blogsDTO.BlogAuthor is null)
             {
-                blogTable.BlogAuthor = item.BlogAuthor;
+                blogsDTO.BlogAuthor = item.BlogAuthor;
             }
 
-            item.BlogContext = blogTable.BlogContext;
-            if (blogTable.BlogContext is null)
+            item.BlogContext = blogsDTO.BlogContext;
+            if (blogsDTO.BlogContext is null)
             {
-                blogTable.BlogContext = item.BlogContext;
+                blogsDTO.BlogContext = item.BlogContext;
             }
             _db.Entry(item).State = EntityState.Modified;
             _db.SaveChanges();
             return Ok();
         }
         [HttpPatch("{id}")]
-        public IActionResult PatchBlogs(int id, BlogTable blogTable)
+        public IActionResult PatchBlogs(int id, BlogsDTO blogsDTO)
         {
             var items = _db.BlogTables.AsNoTracking().FirstOrDefault(x => x.BlogId == id && x.DeleteFlag == false);
             if (items == null)
             {
                 return NotFound();
             }
-            if (!string.IsNullOrEmpty(blogTable.BlogTitle))
+            if (!string.IsNullOrEmpty(blogsDTO.BlogTitle))
             {
-                items.BlogTitle = blogTable.BlogTitle;
+                items.BlogTitle = blogsDTO.BlogTitle;
             }
-            if (!string.IsNullOrEmpty(blogTable.BlogAuthor))
+            if (!string.IsNullOrEmpty(blogsDTO.BlogAuthor))
             {
-                items.BlogAuthor = blogTable.BlogAuthor;
+                items.BlogAuthor = blogsDTO.BlogAuthor;
             }
-            if (!string.IsNullOrEmpty(blogTable.BlogContext))
+            if (!string.IsNullOrEmpty(blogsDTO.BlogContext))
             {
-                items.BlogContext = blogTable.BlogContext;
+                items.BlogContext = blogsDTO.BlogContext;
             }
             _db.Entry(items).State = EntityState.Modified;
             var result = _db.SaveChanges();
@@ -102,7 +167,25 @@ namespace DotNetTraining.RestApi.Controllers
                 return BadRequest();
             }
             var item = _db.BlogTables.AsNoTracking().FirstOrDefault(x => x.BlogId == id && x.DeleteFlag == false);
-            item.DeleteFlag = true;
+            BlogsDTO blogsDTO = new BlogsDTO();
+            blogsDTO.DeleteFlag = true; 
+            item.DeleteFlag = blogsDTO.DeleteFlag;
+            _db.Entry(item).State = EntityState.Deleted;
+            _db.SaveChanges();
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult ResotreBlogs(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            var item = _db.BlogTables.AsNoTracking().FirstOrDefault(x => x.BlogId == id && x.DeleteFlag == true);
+            BlogsDTO blogsDTO = new BlogsDTO();
+            blogsDTO.DeleteFlag = false; 
+            item.DeleteFlag = blogsDTO.DeleteFlag;
             _db.Entry(item).State = EntityState.Deleted;
             _db.SaveChanges();
             return Ok();

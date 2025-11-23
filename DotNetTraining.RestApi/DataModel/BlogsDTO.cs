@@ -3,9 +3,9 @@
     public class BlogsDTO
     {
         public int BlogId { get; set; }
-        public string? BlogTitle { get; set; }
-        public string? BlogAuthor { get; set; }
-        public string? BlogContext { get; set; }
-        public bool DeleteFlag { get; set; }
+        public string BlogTitle { get; set; } = null!;
+        public string BlogAuthor { get; set; } = null!;
+        public string BlogContext { get; set; } = null!;
+        public bool? DeleteFlag { get; set; }
     }
 }
