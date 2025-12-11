@@ -13,9 +13,9 @@ namespace DotNetTraining.RestApi.Controllers
     {
         private readonly BlogsServices _service;
 
-        public BlogServiceController()
+        public BlogServiceController(BlogsServices service)
         {
-            _service = new BlogsServices();
+            _service = service;
         }
 
         [HttpGet]

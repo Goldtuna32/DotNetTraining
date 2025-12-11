@@ -10,7 +10,12 @@ namespace DotNetTraining.RestApi.Controllers
     [ApiController]
     public class BlogsControllerExample : ControllerBase
     {
-        private readonly AppDbContext _db = new AppDbContext();
+        private readonly AppDbContext _db;
+
+        public BlogsControllerExample(AppDbContext db)
+        {
+            _db = db;
+        }
 
         [HttpGet]
         public IActionResult GetBlogs()

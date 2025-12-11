@@ -1,3 +1,7 @@
+using DotNetTraining.Domain.Services;
+using DotNetTrainingDatabase.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
@@ -5,6 +9,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
+});
+
+builder.Services.AddScoped<IBlogsServices, BlogsServices>();
 
 var app = builder.Build();
 

@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace DotNetTraining.Domain.Services
 {
-    public class BlogsServices
+    public class BlogsServices : IBlogsServices
     {
-        private readonly AppDbContext _db = new AppDbContext();
+        private readonly AppDbContext _db;
+
+        public BlogsServices(AppDbContext db)
+        {
+            _db = db;
+        }
 
         public List<BlogTable> Blogs()
         {
@@ -22,7 +27,7 @@ namespace DotNetTraining.Domain.Services
         {
             var model = _db.BlogTables
                 .AsNoTracking()
-                .Where(x=> x.DeleteFlag == true)
+                .Where(x => x.DeleteFlag == true)
                 .ToList();
             return model;
         }
@@ -30,10 +35,10 @@ namespace DotNetTraining.Domain.Services
         public void CreateBlog(BlogTable blog)
         {
             _db.BlogTables.Add(blog);
-            _db.SaveChanges(); 
+            _db.SaveChanges();
         }
 
-        public BlogTable GetBlogById(int id) 
+        public BlogTable GetBlogById(int id)
         {
             var item = _db.BlogTables
             .AsNoTracking()
@@ -60,7 +65,7 @@ namespace DotNetTraining.Domain.Services
             _db.Entry(item).State = EntityState.Modified;
             _db.SaveChanges();
             return item;
-        } 
+        }
 
         public BlogTable UpdateBlog(int id, BlogTable blogsDTO)
         {
